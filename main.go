@@ -36,10 +36,10 @@ func main() {
 		a.POST("/rent", service.RentCar)
 		a.POST("/return/:transaction_id", service.ReturnCar)
 
-		b := e.Group("/booking")
+		b := e.Group("/budgeting")
 		b.Use(internal.CustomJWTMiddleware)
-		//b.GET("/report", service.GetProducts)
-		// b.GET("/:id", service.GetProductDetail)
+		b.POST("/topup", service.TopUpBalance)
+		b.GET("/report", service.GetTransactionByUserID)
 
 
         config.InitDB()
