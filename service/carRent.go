@@ -11,6 +11,19 @@ import (
 	"gorm.io/gorm"
 )
 
+// RentCar godoc
+// @Summary Rent a car
+// @Description Rent a car by providing car ID and quantity
+// @Tags Car
+// @Accept json
+// @Produce json
+// @Param Authorization header string true "Bearer token"
+// @Param transactionRequest body model.TransactionRequest true "Transaction Request"
+// @Success 200 {object} map[string]interface{} "success"
+// @Failure 400 {object} map[string]string "invalid request"
+// @Failure 401 {object} map[string]string "invalid access token"
+// @Failure 500 {object} map[string]string "internal server error"
+// @Router /car/rent [post]
 func RentCar(c echo.Context) error {
 	userId, err := internal.GetUserIDFromToken(c)
 	if err != nil {
@@ -34,6 +47,19 @@ func RentCar(c echo.Context) error {
 	return c.JSON(http.StatusCreated, map[string]interface{}{"message": "success", "detail": transactionRequest})
 }
 
+// ReturnCar godoc
+// @Summary Return a rented car
+// @Description Return a rented car by providing transaction ID
+// @Tags Car
+// @Accept json
+// @Produce json
+// @Param Authorization header string true "Bearer token"
+// @Param transaction_id path string true "Transaction ID"
+// @Success 201 {object} map[string]interface{} "return car success"
+// @Failure 400 {object} map[string]string "invalid request"
+// @Failure 401 {object} map[string]string "invalid access token"
+// @Failure 500 {object} map[string]string "internal server error"
+// @Router /car/return/{transaction_id} [post]
 func ReturnCar (c echo.Context) error {
 	userId, err := internal.GetUserIDFromToken(c)
 	if err != nil {

@@ -12,8 +12,14 @@ import (
 	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
+	echoSwagger "github.com/swaggo/echo-swagger"
 )
 
+// @title Car Rent API
+// @version 1.0
+// @description This is a sample server for a Car Rent management system.
+// @host https://io-graded-challenge-2-dnl312-8f76be7aa88c.herokuapp.com/
+// @BasePath /
 func main() {
         e := echo.New()
 
@@ -40,6 +46,8 @@ func main() {
 		b.Use(internal.CustomJWTMiddleware)
 		b.POST("/topup", service.TopUpBalance)
 		b.GET("/report", service.GetTransactionByUserID)
+
+		e.GET("/swagger/*", echoSwagger.WrapHandler)
 
 
         config.InitDB()

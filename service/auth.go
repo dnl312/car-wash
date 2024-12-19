@@ -15,6 +15,18 @@ import (
 	"gorm.io/gorm"
 )
 
+// LoginUser godoc
+// @Summary Login a user
+// @Description Login a user by providing email and password
+// @Tags Auth
+// @Accept json
+// @Produce json
+// @Param loginRequest body model.LoginRequest true "Login Request"
+// @Success 200 {object} map[string]interface{} "login success"
+// @Failure 400 {object} map[string]string "invalid request parameters"
+// @Failure 401 {object} map[string]string "user not found or invalid password"
+// @Failure 500 {object} map[string]string "internal server error"
+// @Router /auth/login [post]
 func LoginUser(c echo.Context) error {
 	var req model.LoginRequest
 	if err := c.Bind(&req); err != nil {
@@ -60,6 +72,17 @@ func validateRegisterUser(user model.RegisterUser) error {
     return nil
 }
 
+// RegisterUser godoc
+// @Summary Register a new user
+// @Description Register a new user by providing user details
+// @Tags Auth
+// @Accept json
+// @Produce json
+// @Param registerUser body model.RegisterUser true "Register Request"
+// @Success 201 {object} map[string]interface{} "register success"
+// @Failure 400 {object} map[string]string "invalid request parameters"
+// @Failure 500 {object} map[string]string "internal server error"
+// @Router /auth/register [post]
 func RegisterUser(c echo.Context) error {
 	var user model.RegisterUser
 	if err := c.Bind(&user); err != nil {

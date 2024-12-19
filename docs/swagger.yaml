@@ -1,0 +1,296 @@
+basePath: /
+definitions:
+  model.LoginRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  model.RegisterUser:
+    properties:
+      email:
+        type: string
+      name:
+        type: string
+      password:
+        type: string
+    required:
+    - email
+    - name
+    - password
+    type: object
+  model.TransactionRequest:
+    properties:
+      car_id:
+        type: integer
+      end_date:
+        type: string
+      quantity:
+        type: integer
+      start_date:
+        type: string
+    required:
+    - car_id
+    - end_date
+    - quantity
+    - start_date
+    type: object
+host: https://io-graded-challenge-2-dnl312-8f76be7aa88c.herokuapp.com/
+info:
+  contact: {}
+  description: This is a sample server for a Car Rent management system.
+  title: Car Rent API
+  version: "1.0"
+paths:
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Login a user by providing email and password
+      parameters:
+      - description: Login Request
+        in: body
+        name: loginRequest
+        required: true
+        schema:
+          $ref: '#/definitions/model.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: login success
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: invalid request parameters
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: user not found or invalid password
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: internal server error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Login a user
+      tags:
+      - Auth
+  /auth/register:
+    post:
+      consumes:
+      - application/json
+      description: Register a new user by providing user details
+      parameters:
+      - description: Register Request
+        in: body
+        name: registerUser
+        required: true
+        schema:
+          $ref: '#/definitions/model.RegisterUser'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: register success
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: invalid request parameters
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: internal server error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Register a new user
+      tags:
+      - Auth
+  /budgeting/topup:
+    post:
+      consumes:
+      - application/json
+      description: Top up the balance of a user by providing the amount
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Amount to top up
+        in: body
+        name: amount
+        required: true
+        schema:
+          type: number
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: top up balance success
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: invalid request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: invalid access token
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: internal server error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Top up user balance
+      tags:
+      - Budgeting
+  /budgeting/transactions:
+    get:
+      consumes:
+      - application/json
+      description: Get all transactions for a user by providing the user ID
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            additionalProperties: true
+            type: object
+        "401":
+          description: invalid access token
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: internal server error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get transactions by user ID
+      tags:
+      - Budgeting
+  /car/rent:
+    post:
+      consumes:
+      - application/json
+      description: Rent a car by providing car ID and quantity
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Transaction Request
+        in: body
+        name: transactionRequest
+        required: true
+        schema:
+          $ref: '#/definitions/model.TransactionRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: invalid request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: invalid access token
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: internal server error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Rent a car
+      tags:
+      - Car
+  /car/return/{transaction_id}:
+    post:
+      consumes:
+      - application/json
+      description: Return a rented car by providing transaction ID
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Transaction ID
+        in: path
+        name: transaction_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: return car success
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: invalid request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: invalid access token
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: internal server error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Return a rented car
+      tags:
+      - Car
+swagger: "2.0"
