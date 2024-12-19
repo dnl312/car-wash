@@ -1,6 +1,7 @@
 package main
 
 import (
+	internal "car-wash/middleware"
 	"log"
 	"net/http"
 	"os"
@@ -30,14 +31,14 @@ func main() {
 		e.POST("/users/login", service.LoginUser)
         e.POST("/users/register", service.RegisterUser)
 
-		// a := e.Group("/users/carts")
-		// a.Use(internal.CustomJWTMiddleware)
-		// a.POST("", service.InsertCart)
-		// a.GET("", service.GetCarts)
-		// a.DELETE("/:id", service.DeleteCartItem)
+		a := e.Group("/car")
+		a.Use(internal.CustomJWTMiddleware)
+		a.POST("/rent", service.RentCar)
+		a.POST("/return/:transaction_id", service.ReturnCar)
 
-		// b := e.Group("/products")
-		// b.GET("", service.GetProducts)
+		b := e.Group("/booking")
+		b.Use(internal.CustomJWTMiddleware)
+		//b.GET("/report", service.GetProducts)
 		// b.GET("/:id", service.GetProductDetail)
 
 

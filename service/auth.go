@@ -22,7 +22,7 @@ func LoginUser(c echo.Context) error {
 	}
 
 	var user model.User
-	if err := config.DB.Table("users_l3p2w3").Where("email = ?", req.Email).First(&user).Error; err != nil {
+	if err := config.DB.Table("users_l3p2w4").Where("email = ?", req.Email).First(&user).Error; err != nil {
 		if err == gorm.ErrRecordNotFound{
 			return c.JSON(http.StatusUnauthorized, map[string]string{"message": "user not found"})
 		}
@@ -82,7 +82,7 @@ func RegisterUser(c echo.Context) error {
 		Password: string(hashedPassword),
 	}
 
-	if err := config.DB.Table("users_l3p2w3").Create(&newUser).Error; err != nil {
+	if err := config.DB.Table("users_l3p2w4").Create(&newUser).Error; err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]string{"message": "internal server error", "derroretail": err.Error()})
 	}
 
