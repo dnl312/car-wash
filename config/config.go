@@ -10,6 +10,20 @@ import (
 
 var DB *gorm.DB
 
+type MidtransConfig struct {
+	MidtransAPIKey string
+	MidtransURL    string
+	MidtransURLApi    string
+}
+
+func LoadMidtransConfig() *MidtransConfig {
+	return &MidtransConfig{
+		MidtransAPIKey: os.Getenv("MIDTRANS_APIKEY"),
+		MidtransURL:    os.Getenv("MIDTRANS_URL"),
+		MidtransURLApi:    os.Getenv("MIDTRANS_URL_API"),
+	}
+}
+
 func InitDB() {
     dsn := os.Getenv("DATABASE_URL")
     var err error

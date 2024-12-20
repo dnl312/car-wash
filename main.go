@@ -44,7 +44,12 @@ func main() {
 
 		b := e.Group("/budgeting")
 		b.Use(internal.CustomJWTMiddleware)
-		b.POST("/topup", service.TopUpBalance)
+		b.POST("/topup", func(c echo.Context) error {
+				return service.CreateTopUp(c, config.LoadMidtransConfig())
+			})
+		b.POST("/topup/:transaction_id",  func(c echo.Context) error {
+				return service.TopupSettlement(c, config.LoadMidtransConfig())
+			})
 		b.GET("/report", service.GetTransactionByUserID)
 
 		e.GET("/swagger/*", echoSwagger.WrapHandler)
